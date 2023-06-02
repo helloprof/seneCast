@@ -1,0 +1,35 @@
+[
+   {
+    "id": 1,
+    "title": "Mr. Beast heals blind people",
+    "description":"1000 ppl",
+    "thumbnail":"https://i.ytimg.com/vi/TJ2ifmkGGus/maxresdefault.jpg",
+    "date":"2023-01-01",
+    "channel":1,
+    "comments":["cool", "not cool", "he thinks he's a gawd!!!"],
+    "likes":2,
+    "views":100
+   },
+   {
+    "id": 2,
+    "title": "Wheels on the Bus",
+    "description":"cocomelon",
+    "thumbnail":"https://i.ytimg.com/vi/e_04ZrNroTo/maxresdefault.jpg",
+    "date":"2023-01-01",
+    "channel":2,
+    "comments":["goo goo gaga", "asdkiuaskdjhakjsd"],
+    "likes":111,
+    "views":43592475987
+   },
+   {
+    "id": 3,
+    "title": "Building a React App",
+    "description":"really fast",
+    "thumbnail":"https://i.ytimg.com/vi/XUwzASyHr4Q/mqdefault.jpg",
+    "date":"2023-01-02",
+    "channel":3,
+    "comments":["so easy!", "so hard!"],
+    "likes":12,
+    "views":1231
+   }
+]
