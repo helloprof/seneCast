@@ -40,3 +40,15 @@ module.exports.getAllChannels = () => {
     resolve(channels)
   })
 }
+
+module.exports.addChannel = (channel) => {
+  return new Promise((resolve, reject) => {
+    if (channel) {
+      channel.id = channels.length + 1
+      channels.push(channel)
+      resolve("success")
+    } else {
+      reject("no channel data available")
+    }
+  })
+}
