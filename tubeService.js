@@ -41,6 +41,18 @@ module.exports.getAllChannels = () => {
   })
 }
 
+module.exports.addVideo = (video) => {
+  return new Promise((resolve, reject) => {
+    if (video) {
+      video.id = videos.length + 1
+      video.date = new Date()
+      videos.push(video)
+      resolve("success")
+    } else {
+      reject("failed")
+    }
+  })
+}
 module.exports.addChannel = (channel) => {
   return new Promise((resolve, reject) => {
     if (channel) {
