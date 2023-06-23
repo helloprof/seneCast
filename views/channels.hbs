@@ -1,0 +1,23 @@
+<div class="container" style="padding-top:60px">
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Channel</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each data}}
+    <tr>
+      <th scope="row">{{@index}}</th>
+      <td>{{channel}}</td>
+    </tr>
+    {{else}}
+    <tr>
+      <td>NO DATA FOUND</td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+</div>
