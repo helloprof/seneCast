@@ -1,0 +1,17 @@
+</br>
+{{#each data}}
+<div class="card" style="width: 18rem;">
+  <img class="card-img-top" src="{{video}}">
+  <div class="card-body">
+    <h5 class="card-title">{{title}}</h5>
+    <p class="card-text">{{description}}</p>
+    <a href="#" class="btn btn-primary">Go somewhere</a>
+  </div>
+</div>
+{{else}}
+<div class="card" style="width: 18rem;">
+    <h5 class="card-title">NO DATA FOUND</h5>
+  </div>
+</div>
+{{/each}}
+</br>
