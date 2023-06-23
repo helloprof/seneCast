@@ -1,0 +1,31 @@
+<div class="container" style="padding-top:60px">
+  <h1>Add New Video</h1>
+
+  <form action="/videos/add" method="POST" enctype="multipart/form-data">
+    <div class="form-group">
+      <label for="channel">Channel</label>
+
+      <select name="channel" id="channel" class="form-select">
+        <option value="1">test</option>
+        <option value="2">test1</option>
+        <option value="3">test2</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input type="text" class="form-control" id="title" name="title">
+    </div>
+
+    <div class="form-group">
+      <label for="video">Thumbnail/Video Upload</label>
+      <input type="file" class="form-control" id="video" name="video">
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <input type="text" class="form-control" id="description" name="description">
+    </div>
+    </br>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
