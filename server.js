@@ -6,16 +6,21 @@ const path = require("path")
 const multer = require("multer");
 const cloudinary = require('cloudinary').v2
 const streamifier = require('streamifier')
+const env = require("dotenv")
+env.config()
 
 const upload = multer(); // no { storage: storage } 
 app.use(express.urlencoded({ extended: true }));
+const exphbs = require('express-handlebars');
+app.engine('.hbs', exphbs.engine({ extname: '.hbs' }));
+app.set('view engine', '.hbs');
 
 const HTTP_PORT = process.env.PORT || 8080;
 
 cloudinary.config({
-  cloud_name: "",
-  api_key: "",
-  api_secret: "",
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
   secure: true
 });
 
@@ -26,27 +31,51 @@ function onHttpStart() {
 }
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "/views/index.html"))
-  // res.redirect("/about")
-});
+  // res.sendFile(path.join(__dirname, "/views/index.html"))
+  tubeService.getAllVideos().then((videos) => {
+    // res.json(videos)
+    res.render('index', {
+      data: videos,
+      layout: 'main'
+    })
+  }).catch((err) => {
+    console.log(err)
+  })
+
+})
 
 app.get("/videos", (req, res) => {
   tubeService.getAllVideos().then((videos) => {
-    res.json(videos)
+    // res.json(videos)
+    res.render('index', {
+      data: videos,
+      layout: 'main'
+    })
+  }).catch((err) => {
+    console.log(err)
   })
 })
 
 app.get("/channels", (req, res) => {
   tubeService.getAllChannels().then((channels) => {
-    res.json(channels)
+    // res.json(channels)
+    res.render('channels', {
+      data: channels,
+      layout: 'main'
+    })
+  }).catch((err) => {
+    console.log(err)
   })
 })
 
-app.get("/videos/new", (req, res) => {
-  res.sendFile(path.join(__dirname, "/views/addVideos.html"))
+app.get("/videos/add", (req, res) => {
+  // res.sendFile(path.join(__dirname, "/views/addVideos.html"))
+  res.render('addVideos', {
+    layout: 'main'
+  })
 })
 
-app.post("/videos/new", upload.single("video"), (req, res) => {
+app.post("/videos/add", upload.single("video"), (req, res) => {
   if (req.file) {
     let streamUpload = (req) => {
       return new Promise((resolve, reject) => {
@@ -94,7 +123,10 @@ app.post("/videos/new", upload.single("video"), (req, res) => {
 
 
 app.get("/channels/add", (req, res) => {
-  res.sendFile(path.join(__dirname, "views/addChannels.html"))
+  // res.sendFile(path.join(__dirname, "views/addChannels.html"))
+  res.render('addChannels', {
+    layout: 'main'
+  })
 })
 
 app.post("/channels/add", (req, res) => {
