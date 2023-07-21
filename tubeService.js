@@ -95,6 +95,7 @@ module.exports.addVideo = (videoSubmitted) => {
     })
   })
 }
+
 module.exports.addChannel = (channel) => {
   return new Promise((resolve, reject) => {
 
@@ -108,5 +109,37 @@ module.exports.addChannel = (channel) => {
     } else {
       reject()
     }
+  })
+}
+
+module.exports.deleteVideo = (videoID) => {
+  return new Promise((resolve, reject) => {
+    Video.destroy({
+      where: {
+        videoID: videoID
+      }
+    }).then(() => {
+      console.log("VIDEO DELETED")
+      resolve()
+    }).catch((err) => {
+      console.log("VIDEO DELETE FAILED")
+      reject(err)
+    })
+  })
+}
+
+module.exports.deleteChannel = (channelID) => {
+  return new Promise((resolve, reject) => {
+    Channel.destroy({
+      where: {
+        channelID: channelID
+      }
+    }).then(() => {
+      console.log("CHANNEL DELETED")
+      resolve()
+    }).catch((err) => {
+      console.log("CHANNEL DELETE FAILED")
+      reject(err)
+    })
   })
 }
