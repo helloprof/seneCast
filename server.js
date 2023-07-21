@@ -142,6 +142,18 @@ app.post("/channels/add", (req, res) => {
   })
 })
 
+app.get("/channels/delete/:id", (req, res) => {
+  tubeService.deleteChannel(req.params.id).then(() => {
+    res.redirect("/channels")
+  })
+})
+
+app.get("/videos/delete/:id", (req, res) => {
+  tubeService.deleteVideo(req.params.id).then(() => {
+    res.redirect("/videos")
+  })
+})
+
 
 app.use((req, res) => {
   res.status(404).send("Page Not Found");
