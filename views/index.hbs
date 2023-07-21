@@ -1,17 +1,31 @@
 </br>
-{{#each data}}
-<div class="card" style="width: 18rem;">
-  <img class="card-img-top" src="{{video}}">
-  <div class="card-body">
-    <h5 class="card-title">{{title}}</h5>
-    <p class="card-text">{{description}}</p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
+  <a class="btn btn-primary" href="/videos/add">Add Video</a>
+</br>
+</br>
+
+<div class="row">
+  {{#each data}}
+  <div class="col-md-4">
+    <div class="card" >
+      {{!-- <img class="card-img-top" src="{{video}}"> --}}
+      <video height="240" controls>
+        <source src="{{video}}" type="video/mp4">
+      </video>
+      <div class="card-body">
+        <h5 class="card-title">{{title}}</h5>
+        <p class="card-text">{{description}}</p>
+        <a href="#" class="btn btn-primary">Go somewhere</a>
+      </div>
+    </div>
   </div>
-</div>
+
 {{else}}
 <div class="card" style="width: 18rem;">
-    <h5 class="card-title">NO DATA FOUND</h5>
-  </div>
+  <h5 class="card-title">NO DATA FOUND</h5>
 </div>
 {{/each}}
+</div>
+
+</div>
+
 </br>
