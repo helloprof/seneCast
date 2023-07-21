@@ -3,12 +3,12 @@
 
   <form action="/videos/add" method="POST" enctype="multipart/form-data">
     <div class="form-group">
-      <label for="channel">Channel</label>
+      <label for="channelID">Channel</label>
 
-      <select name="channel" id="channel" class="form-select">
-        <option value="1">test</option>
-        <option value="2">test1</option>
-        <option value="3">test2</option>
+      <select name="channelID" id="channelID" class="form-select">
+        {{#each data}}
+          <option value={{channelID}}>{{channel}}</option>
+        {{/each}}
       </select>
     </div>
     <div class="form-group">
