@@ -70,9 +70,13 @@ app.get("/channels", (req, res) => {
 
 app.get("/videos/add", (req, res) => {
   // res.sendFile(path.join(__dirname, "/views/addVideos.html"))
-  res.render('addVideos', {
-    layout: 'main'
+  tubeService.getAllChannels().then((channels) => {
+    res.render('addVideos', {
+      data: channels,
+      layout: 'main'
+    })
   })
+
 })
 
 app.post("/videos/add", upload.single("video"), (req, res) => {
@@ -80,6 +84,7 @@ app.post("/videos/add", upload.single("video"), (req, res) => {
     let streamUpload = (req) => {
       return new Promise((resolve, reject) => {
         let stream = cloudinary.uploader.upload_stream(
+          {resource_type: "video"},
           (error, result) => {
             if (result) {
               resolve(result);
@@ -144,4 +149,6 @@ app.use((req, res) => {
 
 tubeService.initialize().then(() => {
   app.listen(HTTP_PORT, onHttpStart);
+}).catch((err) => {
+  console.log(err)
 })
