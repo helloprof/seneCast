@@ -5,6 +5,8 @@
     <tr>
       <th scope="col">ID</th>
       <th scope="col">Channel</th>
+      <th scope="col">Delete</th>
+
     </tr>
   </thead>
   <tbody>
@@ -12,6 +14,7 @@
     <tr>
       <th scope="row">{{channelID}}</th>
       <td>{{channel}}</td>
+      <td><a href="/channels/delete/{{channelID}}" class="btn btn-danger">Delete</a></td>
     </tr>
     {{else}}
     <tr>
