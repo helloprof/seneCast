@@ -55,7 +55,7 @@ module.exports.initialize = () => {
       resolve()
     }).catch((err) => {
       console.log("POST GRES DB COULD NOT BE SYNC'D, ERR: "+err)
-      reject()
+      reject(err)
     })
   })
 }
@@ -63,20 +63,18 @@ module.exports.initialize = () => {
 
 module.exports.getAllVideos = () => {
   return new Promise((resolve, reject) => {
-    if (videos.length == 0) {
-      reject("no videos found!")
-    }
-    // filteredVideos = videos.filter(post => post.id == id)
-    resolve(videos)
+    Video.findAll().then((videos) => {
+      if (videos) {
+        resolve(videos)
+      } else {
+        reject("No videos found")
+      }
+    })
   })
 }
 
 module.exports.getAllChannels = () => {
   return new Promise((resolve, reject) => {
-    // if (channels.length == 0) {
-    //   reject("no videos found!")
-    // }
-    // resolve(channels)
     Channel.findAll().then((channels) => {
       console.log(channels)
       resolve(channels)
@@ -86,27 +84,19 @@ module.exports.getAllChannels = () => {
   })
 }
 
-module.exports.addVideo = (video) => {
+module.exports.addVideo = (videoSubmitted) => {
   return new Promise((resolve, reject) => {
-    if (video) {
-      video.id = videos.length + 1
-      video.date = new Date()
-      videos.push(video)
-      resolve("success")
-    } else {
-      reject("failed")
-    }
+    Video.create(videoSubmitted).then(() => {
+      console.log("VIDEO ADDED")
+      resolve()
+    }).catch((err) => {
+      console.log("VIDEO UPLOAD ERROR!")
+      reject(err)
+    })
   })
 }
 module.exports.addChannel = (channel) => {
   return new Promise((resolve, reject) => {
-    // if (channel) {
-    //   channel.id = channels.length + 1
-    //   channels.push(channel)
-    //   resolve("success")
-    // } else {
-    //   reject("no channel data available")
-    // }
 
     if (channel) {
       Channel.create(channel).then(() => {
