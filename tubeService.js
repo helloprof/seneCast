@@ -112,6 +112,25 @@ module.exports.addChannel = (channel) => {
   })
 }
 
+module.exports.getVideoById = (videoID) => {
+  return new Promise((resolve, reject) => {
+    Video.findOne({
+      where: {
+        videoID: videoID
+      }
+    }).then((video) => {
+      if (video) {
+        resolve(video)
+      } else {
+        reject("Video not found")
+      }
+    }).catch((err) => {
+      console.log("Get video by ID error: "+err)
+      reject(err)
+    })
+  })
+}
+
 module.exports.deleteVideo = (videoID) => {
   return new Promise((resolve, reject) => {
     Video.destroy({

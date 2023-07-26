@@ -154,6 +154,15 @@ app.get("/videos/delete/:id", (req, res) => {
   })
 })
 
+app.get("/videos/:id", (req, res) => {
+  tubeService.getVideoById(req.params.id).then((video) => {
+    // res.redirect("/videos")
+    res.render("index", {
+      data: [video],
+      layout: 'main'
+    })
+  })
+})
 
 app.use((req, res) => {
   res.status(404).send("Page Not Found");
