@@ -1,5 +1,5 @@
 </br>
-  <a class="btn btn-primary" href="/videos/add">Add Video</a>
+  <a class="btn btn-dark" href="/videos/add">Add Video</a>
 </br>
 </br>
 
@@ -14,6 +14,7 @@
       <div class="card-body">
         <h5 class="card-title">{{title}}</h5>
         <p class="card-text">{{description}}</p>
+        <a href="/videos/{{videoID}}" class="btn btn-dark">{{videoID}}</a>
         <a href="/videos/delete/{{videoID}}" class="btn btn-danger">Delete</a>
       </div>
     </div>
