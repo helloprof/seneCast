@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const tubeService = require("./tubeService")
+const userService = require("./userService")
 const path = require("path")
 
 const multer = require("multer");
@@ -164,11 +165,32 @@ app.get("/videos/:id", (req, res) => {
   })
 })
 
+app.get("/register", (req, res) => {
+  // res.sendFile(path.join(__dirname, "views/addChannels.html"))
+  res.render('register', {
+    layout: 'main'
+  })
+})
+
+app.post("/register", (req, res) => {
+  userService.registerUser(req.body).then(() => {
+    res.redirect("/")
+  }).catch((err) => {
+    res.render('register', {
+      errMsg: err,
+      layout: 'main'
+    })
+  })
+})
+
+
 app.use((req, res) => {
   res.status(404).send("Page Not Found");
 })
 
-tubeService.initialize().then(() => {
+tubeService.initialize()
+.then(userService.initialize)
+.then(() => {
   app.listen(HTTP_PORT, onHttpStart);
 }).catch((err) => {
   console.log(err)
