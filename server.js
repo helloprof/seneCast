@@ -121,12 +121,8 @@ app.post("/videos/add", upload.single("video"), (req, res) => {
       console.log(err)
       
     })
-    // TODO: Process the req.body and add it as a new Blog Post before redirecting to /posts
   }
-
-
 })
-
 
 app.get("/channels/add", (req, res) => {
   // res.sendFile(path.join(__dirname, "views/addChannels.html"))
@@ -173,8 +169,12 @@ app.get("/register", (req, res) => {
 })
 
 app.post("/register", (req, res) => {
-  userService.registerUser(req.body).then(() => {
-    res.redirect("/")
+  userService.registerUser(req.body).then((success) => {
+    // res.redirect("/")
+    res.render('register', {
+      successMsg: success,
+      layout: 'main'
+    }) 
   }).catch((err) => {
     res.render('register', {
       errMsg: err,
@@ -183,6 +183,23 @@ app.post("/register", (req, res) => {
   })
 })
 
+app.get("/login", (req, res) => {
+  res.render('login', {
+    layout: 'main'
+  })
+})
+
+app.post("/login", (req, res) => {
+  userService.loginUser(req.body).then(() => {
+    // res.redirect("/")
+    res.redirect("/")
+  }).catch((err) => {
+    res.render('login', {
+      errMsg: err,
+      layout: 'main'
+    })
+  })
+})
 
 app.use((req, res) => {
   res.status(404).send("Page Not Found");
