@@ -23,10 +23,36 @@
           <a class="nav-link" href="/videos/add">Add Video</a>
         </li> --}}
       </ul>
-      {{!-- <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form> --}}
+      {{#if session.user}}
+      <form class="navbar-form navbar-right">
+        <div class="dropdown">
+          <button class="btn btn-primary dropdown-toggle" type="button" id="userMenu" data-toggle="dropdown">
+            <span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;{{session.user.userName}}&nbsp;&nbsp;<span
+              class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="userMenu">
+            <li><a href="/loginHistory">Login History</a></li>
+            <li><a href="/logout">Log Out</a></li>
+          </ul>
+        </div>
+      </form>
+            <ul class="nav navbar-nav navbar-right">
+        <li class="nav-item">
+          <a class="nav-link" href="/loginHistory">Login History</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">Log out</a>
+        </li>
+      </ul>
+      {{else}}
+      <form class="navbar-form navbar-right">
+        <a href="/register" class="btn btn-success"><span
+            class="glyphicon glyphicon-cog"></span>&nbsp;&nbsp;Register</a>
+        <a href="/login" class="btn btn-primary"><span class="glyphicon glyphicon-chevron-right"></span>&nbsp;&nbsp;Log
+          In</a>
+      </form>
+
+      {{/if}}
     </div>
   </div>
 </nav>
