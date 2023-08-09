@@ -16,6 +16,8 @@ const exphbs = require('express-handlebars');
 app.engine('.hbs', exphbs.engine({ extname: '.hbs' }));
 app.set('view engine', '.hbs');
 
+const clientSessions = require("client-sessions");
+
 const HTTP_PORT = process.env.PORT || 8080;
 
 cloudinary.config({
@@ -26,6 +28,27 @@ cloudinary.config({
 });
 
 app.use(express.urlencoded({ extended: true }));
+
+// session data available at req.cookieName i.e. req.session here:
+app.use(clientSessions({
+  cookieName: "session", // this is the object name that will be added to 'req'
+  secret: "long_unguessable_password_string_web322", // this should be a long un-guessable string.
+  duration: 2 * 60 * 1000, // duration of the session in milliseconds (2 minutes)
+  activeDuration: 1000 * 60 // the session will be extended by this many ms each request (1 minute)
+}))
+
+app.use(function(req, res, next) {
+  res.locals.session = req.session
+  next()
+})
+
+function ensureLogin(req, res, next) {
+  if (!req.session.user) {
+    res.redirect("/login");
+  } else {
+    next();
+  }
+}
 
 function onHttpStart() {
   console.log("server is ready on " + HTTP_PORT + " 🚀🚀🚀!!");
@@ -69,7 +92,7 @@ app.get("/channels", (req, res) => {
   })
 })
 
-app.get("/videos/add", (req, res) => {
+app.get("/videos/add", ensureLogin, (req, res) => {
   // res.sendFile(path.join(__dirname, "/views/addVideos.html"))
   tubeService.getAllChannels().then((channels) => {
     res.render('addVideos', {
@@ -80,7 +103,7 @@ app.get("/videos/add", (req, res) => {
 
 })
 
-app.post("/videos/add", upload.single("video"), (req, res) => {
+app.post("/videos/add", ensureLogin, upload.single("video"), (req, res) => {
   if (req.file) {
     let streamUpload = (req) => {
       return new Promise((resolve, reject) => {
@@ -124,14 +147,14 @@ app.post("/videos/add", upload.single("video"), (req, res) => {
   }
 })
 
-app.get("/channels/add", (req, res) => {
+app.get("/channels/add", ensureLogin, (req, res) => {
   // res.sendFile(path.join(__dirname, "views/addChannels.html"))
   res.render('addChannels', {
     layout: 'main'
   })
 })
 
-app.post("/channels/add", (req, res) => {
+app.post("/channels/add", ensureLogin, (req, res) => {
   tubeService.addChannel(req.body).then(() => {
     res.redirect("/channels")
   }).catch((err) => {
@@ -139,19 +162,19 @@ app.post("/channels/add", (req, res) => {
   })
 })
 
-app.get("/channels/delete/:id", (req, res) => {
+app.get("/channels/delete/:id", ensureLogin, (req, res) => {
   tubeService.deleteChannel(req.params.id).then(() => {
     res.redirect("/channels")
   })
 })
 
-app.get("/videos/delete/:id", (req, res) => {
+app.get("/videos/delete/:id", ensureLogin, (req, res) => {
   tubeService.deleteVideo(req.params.id).then(() => {
     res.redirect("/videos")
   })
 })
 
-app.get("/videos/:id", (req, res) => {
+app.get("/videos/:id", ensureLogin, (req, res) => {
   tubeService.getVideoById(req.params.id).then((video) => {
     // res.redirect("/videos")
     res.render("index", {
@@ -190,15 +213,33 @@ app.get("/login", (req, res) => {
 })
 
 app.post("/login", (req, res) => {
-  userService.loginUser(req.body).then(() => {
-    // res.redirect("/")
+  req.body.userAgent = req.get('User-Agent')
+  userService.loginUser(req.body).then((user) => {
+    req.session.user = {
+      userName: user.userName,
+      email: user.email,
+      loginHistory: user.loginHistory
+    }
+
     res.redirect("/")
+
   }).catch((err) => {
     res.render('login', {
       errMsg: err,
       layout: 'main'
     })
   })
+})
+
+app.get("/loginHistory", ensureLogin, (req, res) => {
+  res.render('loginHistory', {
+    layout: 'main'
+  })
+})
+
+app.get("/logout", ensureLogin, (req, res) => {
+  req.session.reset()
+  res.redirect("/");
 })
 
 app.use((req, res) => {
