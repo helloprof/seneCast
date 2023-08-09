@@ -69,10 +69,20 @@ module.exports.loginUser = function (userData) {
     .then((user) => {
       bcrypt.compare(userData.password, user.password).then((result) => {
         console.log(result)
-        if (!result) {
-          reject("CREDENTIALS INCORRECT: TRY AGAIN!")
+        if (result) {
+          user.loginHistory.push({dateTime: new Date(), userAgent: userData.userAgent})
+          User.updateOne(
+            { userName: user.userName },
+            { $set: { loginHistory: user.loginHistory}}
+          ).exec()
+          .then(() => {
+            resolve(user)
+          }).catch((err) => {
+            reject("ERROR UPDATING LOGIN HISTORY")
+            console.log(err)
+          })
         } else {
-          resolve()
+          reject("CREDENTIALS INCORRECT: TRY AGAIN!")
         }
       }).catch((err) => {
         console.log(err)
